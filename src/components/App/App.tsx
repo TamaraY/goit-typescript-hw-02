@@ -1,23 +1,27 @@
-import { useEffect, useState } from "react";
-import { fetchArticles } from "./services/api";
-
-import ImageGallery from "./components/ImageGallery/ImageGallery";
-import Loader from "./components/Loader/Loader";
-import SearchBar from "./components/SearchBar/SearchBar";
-import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-import ImageModal from "./components/ImageModal/ImageModal";
-
+import React, { useEffect, useState } from "react";
+import { fetchArticles } from "../../services/api";
+import ImageGallery from "../ImageGallery/ImageGallery";
+import Loader from "../Loader/Loader";
+import SearchBar from "../SearchBar/SearchBar";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ImageModal from "../ImageModal/ImageModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const App = () => {
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [page, setPage] = useState(0);
-  const [query, setQuery] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
+interface Image {
+  id: string;
+  url: string;
+  title: string;
+}
+
+const App: React.FC = () => {
+  const [images, setImages] = useState<Image[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
+  const [query, setQuery] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   useEffect(() => {
     if (!query) {
@@ -42,7 +46,7 @@ const App = () => {
     setPage((prev) => prev + 1);
   };
 
-  const handleSetQuery = (searchValue) => {
+  const handleSetQuery = (searchValue: string) => {
     // Виклик сповіщення при порожньому полі
     if (!searchValue.trim()) {
       toast.error("Please fill in the search field");
@@ -53,7 +57,7 @@ const App = () => {
     setPage(1);
   };
 
-  const handleOpenModal = (image) => {
+  const handleOpenModal = (image: Image) => {
     setSelectedImage(image); // Встановлюємо вибране зображення
   };
 
@@ -74,7 +78,6 @@ const App = () => {
       )}
       {selectedImage && (
         <ImageModal
-          // перетворюємо об'єкт на булеве значення
           isOpen={!!selectedImage}
           onClose={handleCloseModal}
           image={selectedImage}
