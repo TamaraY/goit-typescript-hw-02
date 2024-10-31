@@ -1,45 +1,27 @@
-import Modal from "react-modal";
-import { useEffect } from "react";
-
+import React from "react";
 import styles from "./ImageModal.module.css";
+import { Image } from "../App/App.types";
 
-// Прив'язка модального вікна до кореневого елемента
-Modal.setAppElement("#root");
+interface ImageModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  image: Image | null;
+}
 
-// Закриття вікна при натисканні ESC
-const ImageModal = ({ isOpen, onClose, image }) => {
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, onClose]);
+const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, image }) => {
+  if (!isOpen || !image) {
+    return null;
+  }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      className={styles.modalContent}
-      overlayClassName={styles.modalOverlay}
-    >
-      <img
-        src={image.urls.full}
-        alt={image.alt_description}
-        className={styles.modalImage}
-      />
-      <button onClick={onClose} className={styles.closeBtn}>
-        ×
-      </button>
-    </Modal>
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className={styles.closeBtn}>
+          ×
+        </button>
+        <img src={image.full} alt={image.title} className={styles.modalImage} />
+      </div>
+    </div>
   );
 };
 

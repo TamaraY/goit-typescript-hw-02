@@ -1,17 +1,27 @@
-import ImageCard from "../ImageCard/ImageCard";
+import React from "react";
+import styles from "./ImageGallery.module.css";
+import { Image } from "../App/App.types";
 
-const ImageGallery = ({ images, onImageClick }) => {
-  if (!images || images.length === 0) return null; // Якщо немає зображень, не рендеримо нічого
+interface ImageGalleryProps {
+  images: Image[];
+  onImageClick: (image: Image) => void;
+}
 
+const ImageGallery: React.FC<ImageGalleryProps> = ({
+  images,
+  onImageClick,
+}) => {
   return (
-    <div>
-      <ul style={{ display: "flex", flexWrap: "wrap" }}>
-        {images.map((image, index) => (
-          <li key={`${image.id}-${index}`} style={{ margin: "5px" }}>
-            <ImageCard image={image} onImageClick={() => onImageClick(image)} />
-          </li>
-        ))}
-      </ul>
+    <div className={styles.gallery}>
+      {images.map((image) => (
+        <div
+          key={image.id}
+          className={styles.imageWrapper}
+          onClick={() => onImageClick(image)}
+        >
+          <img src={image.url} alt={image.title} className={styles.image} />
+        </div>
+      ))}
     </div>
   );
 };

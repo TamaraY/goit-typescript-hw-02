@@ -8,12 +8,9 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ImageModal from "../ImageModal/ImageModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Image } from "./App.types";
 
-interface Image {
-  id: string;
-  url: string;
-  title: string;
-}
+const clientId = "_mrFDVAvAE8ojYscnS83cqv1c0rdRqbbLcRav-AJnS4";
 
 const App: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -31,9 +28,11 @@ const App: React.FC = () => {
       try {
         setIsError(false);
         setIsLoading(true);
-        const data = await fetchArticles(page, query);
+        const data = await fetchArticles(page, query, clientId);
+        console.log(data);
         setImages((prev) => [...prev, ...data]);
-      } catch {
+      } catch (error) {
+        console.error("Error fetching articles:", error);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -47,7 +46,6 @@ const App: React.FC = () => {
   };
 
   const handleSetQuery = (searchValue: string) => {
-    // Виклик сповіщення при порожньому полі
     if (!searchValue.trim()) {
       toast.error("Please fill in the search field");
       return;
@@ -58,11 +56,11 @@ const App: React.FC = () => {
   };
 
   const handleOpenModal = (image: Image) => {
-    setSelectedImage(image); // Встановлюємо вибране зображення
+    setSelectedImage(image);
   };
 
   const handleCloseModal = () => {
-    setSelectedImage(null); // Закриваємо модальне вікно, очищаючи вибране зображення
+    setSelectedImage(null);
   };
 
   return (

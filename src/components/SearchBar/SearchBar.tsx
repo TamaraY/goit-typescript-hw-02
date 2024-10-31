@@ -1,12 +1,19 @@
+import React from "react";
+import { Field, Form, Formik } from "formik";
 import style from "./SearchBar.module.css";
 
-import { Field, Form, Formik } from "formik";
+interface SearchBarProps {
+  setQuery: (query: string) => void;
+}
 
-const SearchBar = ({ setQuery }) => {
-  const initialValues = {
-    query: "",
-  };
-  const handleSubmit = (values) => {
+interface FormValues {
+  query: string;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ setQuery }) => {
+  const initialValues: FormValues = { query: "" };
+
+  const handleSubmit = (values: FormValues) => {
     console.log(values);
     setQuery(values.query);
   };
@@ -28,4 +35,5 @@ const SearchBar = ({ setQuery }) => {
     </div>
   );
 };
+
 export default SearchBar;
