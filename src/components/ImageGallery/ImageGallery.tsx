@@ -19,7 +19,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
           className={styles.imageWrapper}
           onClick={() => onImageClick(image)}
         >
-          <img src={image.url} alt={image.title} className={styles.image} />
+          <img
+            src={image.urls.thumb}
+            alt={image.alt_description}
+            className={styles.image}
+          />
         </div>
       ))}
     </div>

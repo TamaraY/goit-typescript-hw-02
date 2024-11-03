@@ -19,7 +19,11 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, image }) => {
         <button onClick={onClose} className={styles.closeBtn}>
           ×
         </button>
-        <img src={image.full} alt={image.title} className={styles.modalImage} />
+        <img
+          src={image.urls.full}
+          alt={image.alt_description}
+          className={styles.modalImage}
+        />
       </div>
     </div>
   );

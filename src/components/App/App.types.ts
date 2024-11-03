@@ -1,6 +1,5 @@
 export interface Image {
   id: string;
-  url: string;
-  title: string;
-  full: string;
+  urls: { thumb: string; full: string };
+  alt_description: string;
 }
